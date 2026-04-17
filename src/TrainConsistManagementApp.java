@@ -1,4 +1,14 @@
-import java.util.regex.*;
+import java.util.*;
+
+class GoodsBogie {
+    String type;   // Rectangular / Cylindrical
+    String cargo;  // Coal / Petroleum etc.
+
+    GoodsBogie(String type, String cargo) {
+        this.type = type;
+        this.cargo = cargo;
+    }
+}
 
 public class TrainConsistManagementApp {
 
@@ -6,34 +16,24 @@ public class TrainConsistManagementApp {
 
         System.out.println("=== Train Consist Management App ===");
 
-        // Sample inputs (you can later replace with user input)
-        String trainId = "TRN-1234";
-        String cargoCode = "PET-AB";
+        // Create list of goods bogies
+        List<GoodsBogie> bogies = new ArrayList<>();
 
-        // Define regex patterns
-        String trainPattern = "TRN-\\d{4}";
-        String cargoPattern = "PET-[A-Z]{2}";
+        bogies.add(new GoodsBogie("Rectangular", "Coal"));
+        bogies.add(new GoodsBogie("Cylindrical", "Petroleum"));
+        bogies.add(new GoodsBogie("Rectangular", "Grain"));
 
-        // Compile patterns
-        Pattern p1 = Pattern.compile(trainPattern);
-        Pattern p2 = Pattern.compile(cargoPattern);
+        // Safety check using allMatch()
+        boolean isSafe = bogies.stream()
+                .allMatch(b ->
+                        !b.type.equals("Cylindrical") || b.cargo.equals("Petroleum")
+                );
 
-        // Match inputs
-        Matcher m1 = p1.matcher(trainId);
-        Matcher m2 = p2.matcher(cargoCode);
-
-        // Validate Train ID
-        if (m1.matches()) {
-            System.out.println("Valid Train ID: " + trainId);
+        // Display result
+        if (isSafe) {
+            System.out.println("Train is SAFE for operation.");
         } else {
-            System.out.println("Invalid Train ID");
-        }
-
-        // Validate Cargo Code
-        if (m2.matches()) {
-            System.out.println("Valid Cargo Code: " + cargoCode);
-        } else {
-            System.out.println("Invalid Cargo Code");
+            System.out.println("Train is NOT SAFE!");
         }
     }
 }
